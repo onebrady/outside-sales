@@ -1,0 +1,101 @@
+.modal-overlay {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 9999;
+
+  display: none;
+  width: 100%;
+  height: 100vh;
+  padding: 60px 3%;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.resources {
+  display: none;
+}
+
+.modal-a {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  padding: 8px 16px 0px;
+  flex-direction: column;
+  align-items: stretch;
+  grid-row-gap: 32px;
+
+  border: 1.5px solid #131315;
+  border-radius: 16px;
+
+  background-color: white;
+
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2);
+}
+
+@media screen and (max-width: 479px) {
+  .modal-a {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+.modal-close-button {
+  position: absolute;
+  left: auto;
+  top: 24px;
+  right: 24px;
+  bottom: auto;
+
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+
+  transition: all 300ms ease;
+
+  color: #9797a1;
+}
+
+.modal-close-button:hover {
+  color: #333338;
+}
+
+.icon-regular-4 {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+}
+
+.hubspot-form {
+  padding: 16px 16px 8px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.text-block-5 {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.text-block-5.title {
+  margin-bottom: 0px;
+}
+
+.modal-background {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: rgba(0, 0, 0, 0.4);
+
+  cursor: pointer;
+}

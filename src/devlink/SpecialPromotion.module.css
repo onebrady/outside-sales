@@ -1,0 +1,76 @@
+.section-26 {
+  background-color: #f6f5f3;
+}
+
+.section-26.white {
+  background-color: white;
+  background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67367ec56ee379db39fe2b07_bg-right.jpg");
+  background-position: 0px 0px;
+  background-size: cover;
+}
+
+.container-x-large-2 {
+  width: 100%;
+  max-width: 1440px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container-x-large-2.top {
+  margin-top: 36px;
+  padding-right: 16px;
+  padding-bottom: 36px;
+  padding-left: 16px;
+}
+
+.div-block-113 {
+  aspect-ratio: 1440/125;
+  background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67d4a951fa4575aabe316950_ranco-switchgate-desktop-ad.webp");
+  background-position: 0px 0px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 991px) {
+  .div-block-113 {
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .div-block-113 {
+    aspect-ratio: 768/250;
+    background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67d4a9519a7088c922c382fc_ranco-switchgate-tablet-ad.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .div-block-113 {
+    aspect-ratio: 480/250;
+    background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67d4a95136c78237853aa5b8_ranco-switchgatemobilet-ad.webp");
+  }
+}
+
+.div-block-113.extendables {
+  background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67f0262f749897e3d2030fe7_finance-offer.webp");
+}
+
+@media screen and (max-width: 767px) {
+  .div-block-113.extendables {
+    background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67f04847f7a08402b2fb1ac9_finance-offertablet.webp");
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .div-block-113.extendables {
+    background-image: url("https://cdn.prod.website-files.com/66b7d41d1e317999155a1a90/67f03d4db41d0ded5d803923_finance-offer-mobile.webp");
+  }
+}
+
+.link-block-14 {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

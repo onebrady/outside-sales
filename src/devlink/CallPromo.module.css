@@ -1,0 +1,114 @@
+.footer-promo {
+  display: none;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: var(--light__primaryfixed_clv);
+}
+
+@media screen and (max-width: 991px) {
+  .footer-promo {
+    position: fixed;
+    bottom: 0px;
+    z-index: 9998;
+
+    display: block;
+    width: 100%;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
+.container-large {
+  width: 100%;
+  max-width: 1280px;
+}
+
+.container-large.ext {
+  max-width: 1440px;
+}
+
+.div-block-23 {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .div-block-23 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.footer-contact-button {
+  padding: 8px 24px;
+  border-radius: 4px;
+  background-color: var(--dark__background_clv);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 479px) {
+  .footer-contact-button {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
+
+.footer-contact-button.secondary {
+  border: 1px solid var(--dark__background_clv);
+  background-color: var(--background);
+}
+
+@media screen and (max-width: 767px) {
+  .footer-contact-button.secondary {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .footer-contact-button.secondary.call {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .footer-contact-button.secondary.call {
+    display: block;
+  }
+}
+
+.footer-contact-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.image-9 {
+  width: 18px;
+}
+
+.image-9.financing {
+  width: 18px;
+}
+
+.text-block-6 {
+  color: white;
+}
+
+.text-block-6.secondary {
+  color: #1d1b16;
+}
+
+#w-node-f2d56911-1aa0-e25d-943e-f8be91815062-91815054 {
+}
+#footer-phone.w-node-f2d56911-1aa0-e25d-943e-f8be91815067-91815054 {
+}
+@media screen and (max-width: 767px) {
+  #footer-phone.w-node-f2d56911-1aa0-e25d-943e-f8be91815067-91815054 {
+  }
+}
