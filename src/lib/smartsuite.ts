@@ -13,6 +13,7 @@ if (!SMARTSUITE_WORKSPACE_ID) {
 }
 
 const TRAILERS_TABLE_ID = "67b5712e741daeee563c2092";
+const CONSIGNMENTS_TABLE_ID = "679f9d2e4334632448afc286";
 
 interface SmartSuiteListRequestBody {
   filter?: unknown;
@@ -91,6 +92,38 @@ export async function fetchInStockTrailers(options?: {
   }
 
   const path = `/api/v1/applications/${TRAILERS_TABLE_ID}/records/list/?${params.toString()}`;
+
+  return smartsuiteFetch<SmartSuiteListResponse<SmartSuiteTrailerRecord>>(path, body);
+}
+
+export async function fetchConsignmentTrailers(options?: {
+  offset?: number;
+  limit?: number;
+  hydrated?: boolean;
+}): Promise<SmartSuiteListResponse<SmartSuiteTrailerRecord>> {
+  const { offset = 0, limit, hydrated = true } = options ?? {};
+
+  const body: SmartSuiteListRequestBody = {
+    filter: {
+      operator: "and",
+      fields: [
+        {
+          field: "s934963a2a",
+          comparison: "is",
+          value: "backlog",
+        },
+      ],
+    },
+    hydrated,
+  };
+
+  const params = new URLSearchParams();
+  params.set("offset", String(offset));
+  if (typeof limit === "number") {
+    params.set("limit", String(limit));
+  }
+
+  const path = `/api/v1/applications/${CONSIGNMENTS_TABLE_ID}/records/list/?${params.toString()}`;
 
   return smartsuiteFetch<SmartSuiteListResponse<SmartSuiteTrailerRecord>>(path, body);
 }

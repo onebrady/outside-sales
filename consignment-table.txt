@@ -1,0 +1,29 @@
+Consignment Table ID
+679f9d2e4334632448afc286
+
+Category
+s47d53952b
+
+VIN
+s01296f69c
+
+Manufacturer
+s47d53952b
+
+Model
+s96205b0ac
+
+Advertised Price
+sbbb93f261
+
+Location
+s3aa410cc9
+
+Unit Cost
+s1997bcaae
+
+Minimum Sale Price
+sb81046a0c
+
+Website Link
+s22a3610bf
