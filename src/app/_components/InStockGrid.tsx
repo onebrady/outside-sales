@@ -268,16 +268,17 @@ export function InStockGrid() {
             .json()
             .then((payload) => {
               if (payload && typeof payload === "object") {
-                if (typeof payload.error === "string") {
-                  if (typeof payload.details === "string") {
-                    return `${payload.error}: ${payload.details}`;
+                const errorPayload = payload as { error?: unknown; details?: unknown };
+                if (typeof errorPayload.error === "string") {
+                  if (typeof errorPayload.details === "string") {
+                    return `${errorPayload.error}: ${errorPayload.details}`;
                   }
 
-                  return payload.error;
+                  return errorPayload.error;
                 }
 
-                if (typeof payload.details === "string") {
-                  return payload.details;
+                if (typeof errorPayload.details === "string") {
+                  return errorPayload.details;
                 }
               }
 

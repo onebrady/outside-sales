@@ -46,7 +46,7 @@ async function smartsuiteFetch<TResponse>(path: string, body: unknown): Promise<
     method: "POST",
     headers: {
       Authorization: `Token ${SMARTSUITE_API_TOKEN}`,
-      "Account-Id": SMARTSUITE_WORKSPACE_ID,
+      "Account-Id": SMARTSUITE_WORKSPACE_ID!,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
