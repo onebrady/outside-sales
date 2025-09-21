@@ -40,3 +40,9 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Hide Clerk development mode banner */
+[data-clerk-component="clerk-development-badge"],
+.cl-internal-b3fm6y {
+  display: none !important;
+}

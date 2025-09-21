@@ -22,19 +22,14 @@
               - generic [ref=e25] [cursor=pointer]:
                 - img "Sign in with Microsoft" [ref=e27] [cursor=pointer]
                 - generic [ref=e28] [cursor=pointer]: Microsoft
-        - generic [ref=e29]:
-          - generic [ref=e30]:
-            - generic [ref=e31]: Don’t have an account?
-            - link "Sign up" [ref=e32] [cursor=pointer]:
-              - /url: http://localhost:3000/sign-up
-          - generic [ref=e34]:
-            - generic [ref=e36]:
-              - paragraph [ref=e37]: Secured by
-              - link "Clerk logo" [ref=e38] [cursor=pointer]:
-                - /url: https://go.clerk.com/components
-                - img [ref=e39] [cursor=pointer]
-            - paragraph [ref=e44]: Development mode
-  - button "Open Next.js Dev Tools" [ref=e50] [cursor=pointer]:
-    - img [ref=e51] [cursor=pointer]
-  - alert [ref=e56]: Outside Sales Portal | Western Truck & Trailer
+        - generic [ref=e31]:
+          - generic [ref=e33]:
+            - paragraph [ref=e34]: Secured by
+            - link "Clerk logo" [ref=e35] [cursor=pointer]:
+              - /url: https://go.clerk.com/components
+              - img [ref=e36] [cursor=pointer]
+          - paragraph [ref=e41]: Development mode
+  - button "Open Next.js Dev Tools" [ref=e47] [cursor=pointer]:
+    - img [ref=e48] [cursor=pointer]
+  - alert [ref=e52]
 ```
