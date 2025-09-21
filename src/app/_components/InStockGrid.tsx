@@ -481,7 +481,7 @@ export function InStockGrid() {
           const model = extractTextField(record, MODEL_FIELD_KEY);
           const advPrice = extractPrice(record);
           const daysFloored = extractTextField(record, DAYS_FLOORED_FIELD_KEY);
-          const { alt, display, show: shouldShowTitle } = getDisplayTitle(record, vin);
+          const { alt } = getDisplayTitle(record, vin);
 
           return (
             <Card
@@ -564,7 +564,6 @@ export function InStockGrid() {
       >
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-auto">
           {selectedRecord && (() => {
-            const imageUrl = extractImageUrl(selectedRecord);
             const vin = extractVin(selectedRecord);
             const manufacturer = extractTextField(selectedRecord, MANUFACTURER_FIELD_KEY);
             const model = extractTextField(selectedRecord, MODEL_FIELD_KEY);
@@ -704,7 +703,7 @@ export function InStockGrid() {
                       <div className="text-center p-3 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none">
                         <p className="text-xs uppercase tracking-wider text-slate-600 font-semibold mb-1">Unit Cost</p>
                         <p className="text-base sm:text-lg font-bold text-slate-900">
-                          {Number.isFinite(unitCost) ? currencyFormatter.format(unitCost) : "N/A"}
+                          {Number.isFinite(unitCost) && unitCost !== null ? currencyFormatter.format(unitCost) : "N/A"}
                         </p>
                       </div>
 
@@ -712,7 +711,7 @@ export function InStockGrid() {
                       <div className="text-center p-3 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none">
                         <p className="text-xs uppercase tracking-wider text-slate-600 font-semibold mb-1">Min Sale Price</p>
                         <p className="text-base sm:text-lg font-bold text-slate-900">
-                          {Number.isFinite(minSalePrice) ? currencyFormatter.format(minSalePrice) : "N/A"}
+                          {Number.isFinite(minSalePrice) && minSalePrice !== null ? currencyFormatter.format(minSalePrice) : "N/A"}
                         </p>
                       </div>
 
@@ -720,7 +719,7 @@ export function InStockGrid() {
                       <div className="text-center bg-white rounded-lg p-3">
                         <p className="text-xs uppercase tracking-wider text-green-600 font-semibold mb-1">Advertised Price</p>
                         <p className="text-lg sm:text-2xl font-bold text-green-600">
-                          {Number.isFinite(advPrice) ? currencyFormatter.format(advPrice) : "N/A"}
+                          {Number.isFinite(advPrice) && advPrice !== null ? currencyFormatter.format(advPrice) : "N/A"}
                         </p>
                       </div>
                     </div>
