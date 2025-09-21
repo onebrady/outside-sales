@@ -9,7 +9,17 @@
     "lint": "next lint",
     "deploy": "webflow cloud deploy",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "test:screenshots": "playwright test responsive-screenshots",
+    "test:modal": "playwright test modal-responsive",
+    "test:authenticated": "playwright test authenticated-screenshots",
+    "test:quick": "playwright test quick-screenshots",
+    "test:test-mode": "playwright test test-mode-screenshots",
+    "test:outside-sales": "playwright test correct-urls-screenshots",
+    "test:visual": "playwright test --update-snapshots",
+    "test:responsive": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.32.0",

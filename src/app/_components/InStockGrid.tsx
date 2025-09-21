@@ -376,7 +376,19 @@ export function InStockGrid() {
   }, [records, activeCategory]);
 
   if (loading) {
-    return <div className="text-sm text-slate-500">Loading inventory…</div>;
+    return (
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="animate-pulse">
+            <div className="aspect-[4/3] bg-slate-200 rounded-t-lg"></div>
+            <div className="p-4 bg-white rounded-b-lg border border-slate-200">
+              <div className="h-4 bg-slate-200 rounded mb-2"></div>
+              <div className="h-3 bg-slate-200 rounded w-3/4"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (error) {
@@ -384,49 +396,84 @@ export function InStockGrid() {
   }
 
   if (records.length === 0) {
-    return <div className="text-sm text-slate-500">No trailers found.</div>;
+    return (
+      <div className="text-center py-12">
+        <div className="text-slate-400 mb-2">
+          <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <p className="text-slate-600 font-medium">No trailers found</p>
+        <p className="text-sm text-slate-500 mt-1">Check back later for new inventory</p>
+      </div>
+    );
   }
+
+  const totalCount = records.length;
+  const filteredCount = filteredRecords.length;
 
   return (
     <div className="space-y-6">
-      <div className="-mx-1 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto px-1 py-1">
-        <Badge
-          asChild
-          variant={!activeCategory ? "default" : "outline"}
-          className="snap-start cursor-pointer"
-        >
+      {/* Results count */}
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-slate-600">
+          Showing <span className="font-semibold text-slate-900">{filteredCount}</span> of {totalCount} trailers
+          {activeCategory && (
+            <span className="ml-2 text-slate-500">
+              in <span className="font-medium">{activeCategory}</span>
+            </span>
+          )}
+        </p>
+      </div>
+
+      {/* Category filters with improved styling */}
+      <div className="relative">
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+        <div className="-mx-2 flex snap-x snap-mandatory items-center gap-2 overflow-x-auto px-2 py-2 scrollbar-hide">
+          <Badge
+            asChild
+            variant={!activeCategory ? "default" : "outline"}
+            className="snap-start cursor-pointer shrink-0 transition-all hover:scale-105"
+          >
           <button
             type="button"
             onClick={() => setActiveCategory(null)}
             aria-pressed={!activeCategory}
-            className="outline-none focus-visible:ring-offset-0"
+            className="outline-none focus-visible:ring-2 focus-visible:ring-slate-400 px-4 py-1.5"
           >
-            View all
+            View all ({totalCount})
           </button>
         </Badge>
         {categories.map((category) => {
           const isActive = activeCategory === category;
+          const categoryCount = records.filter((r) => {
+            const cats = extractCategories(r);
+            return cats.some((c) => c.toLowerCase() === category.toLowerCase());
+          }).length;
+
           return (
             <Badge
               asChild
               key={category}
               variant={isActive ? "default" : "outline"}
-              className="snap-start cursor-pointer"
+              className="snap-start cursor-pointer shrink-0 transition-all hover:scale-105"
             >
               <button
                 type="button"
                 onClick={() => setActiveCategory(isActive ? null : category)}
                 aria-pressed={isActive}
-                className="outline-none focus-visible:ring-offset-0"
+                className="outline-none focus-visible:ring-2 focus-visible:ring-slate-400 px-4 py-1.5"
               >
-                {category}
+                {category} ({categoryCount})
               </button>
             </Badge>
           );
         })}
+        </div>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {filteredRecords.map((record) => {
           const imageUrl = extractImageUrl(record);
           const vin = extractVin(record);
@@ -442,7 +489,7 @@ export function InStockGrid() {
               role="button"
               tabIndex={0}
               aria-label={`View details for ${manufacturer ?? "this trailer"}`}
-              className="overflow-hidden cursor-pointer transition-shadow focus-visible:outline-none focus-visible:ring focus-visible:ring-slate-400/60 focus-visible:ring-offset-2 hover:shadow-lg"
+              className="group overflow-hidden cursor-pointer border border-slate-200 bg-white rounded-lg shadow-sm transition-all duration-200 hover:shadow-xl hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
               onClick={() => {
                 setSelectedRecord(record);
                 setDialogOpen(true);
@@ -455,40 +502,49 @@ export function InStockGrid() {
                 }
               }}
             >
-              <div className="relative aspect-[4/3] w-full bg-slate-100">
+              <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
                 <Image
                   src={imageUrl ?? placeholderImage}
                   alt={alt}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(min-width: 1536px) 16vw, (min-width: 1024px) 24vw, (min-width: 640px) 48vw, 90vw"
                   unoptimized={Boolean(imageUrl)}
                 />
-              </div>
-              <CardContent className="space-y-2 p-4">
-                {shouldShowTitle && <p className="text-sm font-semibold text-slate-900">{display}</p>}
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">VIN</p>
-                  <p className="text-sm text-slate-500">{vin ?? "Not available"}</p>
-                </div>
-                {(manufacturer || model) && (
-                  <div className="space-y-1">
-                    {manufacturer && <p className="text-sm font-semibold text-slate-700">{manufacturer}</p>}
-                    {model && <p className="text-sm text-slate-500">{model}</p>}
+                {daysFloored && (
+                  <div className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-semibold ${
+                    parseInt(daysFloored) > 90 ? 'bg-red-500 text-white' :
+                    parseInt(daysFloored) > 60 ? 'bg-yellow-500 text-white' :
+                    'bg-green-500 text-white'
+                  }`}>
+                    {daysFloored} days
                   </div>
                 )}
+              </div>
+              <CardContent className="p-3 space-y-2">
+                {manufacturer && (
+                  <h3 className="font-bold text-slate-900 text-sm leading-tight">
+                    {manufacturer}
+                  </h3>
+                )}
+                {model && (
+                  <p className="text-xs text-slate-600 -mt-1">{model}</p>
+                )}
+
+                <div className="pt-1 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-500 uppercase tracking-wider">VIN</span>
+                  </div>
+                  <p className="text-xs font-mono text-slate-700 truncate" title={vin ?? "Not available"}>
+                    {vin ?? "N/A"}
+                  </p>
+                </div>
+
                 {advPrice !== null && (
-                  <div className="space-y-1">
-                    <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">Adv. Price</p>
-                    <p className="text-sm text-slate-500">
+                  <div className="pt-2 border-t border-slate-100">
+                    <p className="text-lg font-bold text-green-600">
                       {currencyFormatter.format(advPrice)}
                     </p>
-                  </div>
-                )}
-                {daysFloored && (
-                  <div className="space-y-1">
-                    <p className="text-xs uppercase font-semibold tracking-wide text-slate-700">Days Floored</p>
-                    <p className="text-sm text-slate-500">{daysFloored}</p>
                   </div>
                 )}
               </CardContent>
@@ -506,94 +562,174 @@ export function InStockGrid() {
           }
         }}
       >
-        <DialogContent className="max-w-2xl">
-          {selectedRecord && (
-            <DialogHeader>
-              <div className="flex items-start justify-between gap-3">
-                <DialogTitle className="text-left">
-                  {[
-                    extractTextField(selectedRecord, MANUFACTURER_FIELD_KEY),
-                    extractTextField(selectedRecord, MODEL_FIELD_KEY),
-                  ]
-                    .filter(Boolean)
-                    .join(" ") ||
-                    extractVin(selectedRecord) ||
-                    "Trailer details"}
-                </DialogTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Close"
-                  onClick={() => setDialogOpen(false)}
-                  className="text-slate-500 hover:text-slate-900"
-                >
-                  ✕
-                </Button>
-              </div>
-            </DialogHeader>
-          )}
-          {selectedRecord && (
-            <div className="space-y-4 pt-4">
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">Location</p>
-                <p className="text-sm text-slate-900">
-                  {extractTextField(selectedRecord, LOCATION_FIELD_KEY) ?? "Not available"}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">Unit Cost</p>
-                <p className="text-sm text-slate-900">
-                  {(() => {
-                    const unitCostText = findFirstTextValue(selectedRecord[UNIT_COST_FIELD_KEY]);
-                    if (!unitCostText) return "Not available";
-                    const parsed = Number.parseFloat(unitCostText.replace(/[^0-9.\-]/g, ""));
-                    return Number.isFinite(parsed) ? currencyFormatter.format(parsed) : "Not available";
-                  })()}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">Minimum Sale Price</p>
-                <p className="text-sm text-slate-900">
-                  {(() => {
-                    const minSalePriceText = findFirstTextValue(selectedRecord[MINIMUM_SALE_PRICE_FIELD_KEY]);
-                    if (!minSalePriceText) return "Not available";
-                    const parsed = Number.parseFloat(minSalePriceText.replace(/[^0-9.\-]/g, ""));
-                    return Number.isFinite(parsed) ? currencyFormatter.format(parsed) : "Not available";
-                  })()}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">Advertised Price</p>
-                <p className="text-sm text-slate-900">
-                  {(() => {
-                    const advPriceText = findFirstTextValue(selectedRecord[PRICE_FIELD_KEY]);
-                    if (!advPriceText) return "Not available";
-                    const parsed = Number.parseFloat(advPriceText.replace(/[^0-9.\-]/g, ""));
-                    return Number.isFinite(parsed) ? currencyFormatter.format(parsed) : "Not available";
-                  })()}
-                </p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wide font-semibold text-slate-700">Website Link</p>
-                <div className="text-sm">
-                  {(() => {
-                    const websiteUrl = extractTextField(selectedRecord, WEBSITE_LINK_FIELD_KEY);
-                    if (!websiteUrl) return <span className="text-slate-900">Not available</span>;
-                    return (
-                      <a
-                        href={websiteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline"
-                      >
-                        Website Link
-                      </a>
-                    );
-                  })()}
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-auto">
+          {selectedRecord && (() => {
+            const imageUrl = extractImageUrl(selectedRecord);
+            const vin = extractVin(selectedRecord);
+            const manufacturer = extractTextField(selectedRecord, MANUFACTURER_FIELD_KEY);
+            const model = extractTextField(selectedRecord, MODEL_FIELD_KEY);
+            const location = extractTextField(selectedRecord, LOCATION_FIELD_KEY);
+            const daysFloored = extractTextField(selectedRecord, DAYS_FLOORED_FIELD_KEY);
+
+            // Parse all prices
+            const unitCostText = findFirstTextValue(selectedRecord[UNIT_COST_FIELD_KEY]);
+            const unitCost = unitCostText ? Number.parseFloat(unitCostText.replace(/[^0-9.\-]/g, "")) : null;
+
+            const minSalePriceText = findFirstTextValue(selectedRecord[MINIMUM_SALE_PRICE_FIELD_KEY]);
+            const minSalePrice = minSalePriceText ? Number.parseFloat(minSalePriceText.replace(/[^0-9.\-]/g, "")) : null;
+
+            const advPriceText = findFirstTextValue(selectedRecord[PRICE_FIELD_KEY]);
+            const advPrice = advPriceText ? Number.parseFloat(advPriceText.replace(/[^0-9.\-]/g, "")) : null;
+
+            const websiteUrl = extractTextField(selectedRecord, WEBSITE_LINK_FIELD_KEY);
+
+            return (
+              <>
+                {/* Header */}
+                <DialogHeader>
+                  <DialogTitle className="text-xl sm:text-2xl font-bold text-slate-900">
+                    {manufacturer || "Unknown Manufacturer"}
+                    {model && (
+                      <span className="block text-base sm:text-lg font-normal text-slate-600 mt-1">{model}</span>
+                    )}
+                  </DialogTitle>
+                </DialogHeader>
+
+                {/* Days floored badge */}
+                {daysFloored && (
+                  <div className="mb-4">
+                    <div className={`inline-flex px-3 py-1.5 rounded-full text-xs font-semibold ${
+                      parseInt(daysFloored) > 90 ? 'bg-red-100 text-red-700' :
+                      parseInt(daysFloored) > 60 ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-green-100 text-green-700'
+                    }`}>
+                      {daysFloored} days floored
+                    </div>
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="space-y-6">
+                  {/* VIN Section */}
+                  <div className="mb-6 p-3 sm:p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0">
+                          <svg className="h-4 w-4 sm:h-5 sm:w-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                          </svg>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs uppercase tracking-wider text-slate-500 font-semibold">VIN Number</p>
+                          <p className="font-mono text-xs sm:text-sm font-medium text-slate-900 break-all">{vin || "Not available"}</p>
+                        </div>
+                      </div>
+                      {vin && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigator.clipboard.writeText(vin)}
+                          className="text-slate-600 hover:text-slate-900 self-start sm:self-auto"
+                        >
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                          <span className="ml-2">Copy</span>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Two column grid */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Location Card */}
+                    <div className="bg-white border border-slate-200 rounded-lg p-5">
+                      <div className="flex items-start gap-3">
+                        <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                          <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Location</p>
+                          <p className="text-base font-medium text-slate-900">
+                            {location || "Not specified"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Website Link Card */}
+                    <div className="bg-white border border-slate-200 rounded-lg p-5">
+                      <div className="flex items-start gap-3">
+                        <div className="h-10 w-10 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                          <svg className="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Website</p>
+                          {websiteUrl ? (
+                            <a
+                              href={websiteUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-purple-600 hover:text-purple-700 font-medium transition-colors"
+                            >
+                              View Listing
+                              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                            </a>
+                          ) : (
+                            <span className="text-slate-500">Not available</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pricing Section */}
+                  <div className="mt-6 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 sm:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <h3 className="text-base sm:text-lg font-semibold text-slate-900">Pricing Information</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                      {/* Unit Cost */}
+                      <div className="text-center p-3 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none">
+                        <p className="text-xs uppercase tracking-wider text-slate-600 font-semibold mb-1">Unit Cost</p>
+                        <p className="text-base sm:text-lg font-bold text-slate-900">
+                          {Number.isFinite(unitCost) ? currencyFormatter.format(unitCost) : "N/A"}
+                        </p>
+                      </div>
+
+                      {/* Minimum Sale Price */}
+                      <div className="text-center p-3 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none">
+                        <p className="text-xs uppercase tracking-wider text-slate-600 font-semibold mb-1">Min Sale Price</p>
+                        <p className="text-base sm:text-lg font-bold text-slate-900">
+                          {Number.isFinite(minSalePrice) ? currencyFormatter.format(minSalePrice) : "N/A"}
+                        </p>
+                      </div>
+
+                      {/* Advertised Price */}
+                      <div className="text-center bg-white rounded-lg p-3">
+                        <p className="text-xs uppercase tracking-wider text-green-600 font-semibold mb-1">Advertised Price</p>
+                        <p className="text-lg sm:text-2xl font-bold text-green-600">
+                          {Number.isFinite(advPrice) ? currencyFormatter.format(advPrice) : "N/A"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
-              </div>
-            </div>
-          )}
+              </>
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </div>
