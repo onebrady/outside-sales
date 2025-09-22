@@ -31,5 +31,5 @@
           - paragraph [ref=e41]: Development mode
   - button "Open Next.js Dev Tools" [ref=e47] [cursor=pointer]:
     - img [ref=e48] [cursor=pointer]
-  - alert [ref=e52]
+  - alert [ref=e53]: Outside Sales Portal | Western Truck & Trailer
 ```

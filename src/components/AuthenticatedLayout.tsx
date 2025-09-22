@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   ClerkLoaded,
   ClerkLoading,
+  RedirectToSignIn,
   SignedIn,
   SignedOut,
-  SignIn,
 } from "@clerk/nextjs";
 import { SiteHeader } from "@/components/SiteHeader";
 
@@ -14,6 +15,16 @@ interface AuthenticatedLayoutProps {
 }
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
+  const [clientOrigin, setClientOrigin] = useState<string | null>(null);
+
+  useEffect(() => {
+    setClientOrigin(window.location.origin);
+  }, []);
+
+  const redirectUrl = clientOrigin
+    ? new URL("/outside-sales", clientOrigin).toString()
+    : "/outside-sales";
+
   return (
     <main className="min-h-screen bg-slate-50">
       <SignedOut>
@@ -23,26 +34,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
           </div>
         </ClerkLoading>
         <ClerkLoaded>
-          <div className="flex min-h-screen items-center justify-center p-6">
-            <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-10 shadow-lg">
-              <header className="space-y-2 text-center">
-                <p className="text-sm uppercase tracking-wide text-slate-500">
-                  Western Truck &amp; Trailer
-                </p>
-                <h1 className="text-2xl font-semibold text-slate-900">
-                  Outside Sales Portal
-                </h1>
-                <p className="text-sm text-slate-600">
-                  Sign in with your company credentials to view live trailer inventory.
-                </p>
-              </header>
-              <SignIn
-                routing="hash"
-                signUpUrl="/sign-up"
-                afterSignInUrl="/"
-              />
-            </div>
-          </div>
+          <RedirectToSignIn redirectUrl={redirectUrl} />
         </ClerkLoaded>
       </SignedOut>
 

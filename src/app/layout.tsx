@@ -6,6 +6,12 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { AuthenticatedLayout } from "@/components/AuthenticatedLayout";
 
 const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const clerkSignInUrl =
+  process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL ??
+  "https://accounts.westerntruck.com/sign-in";
+const clerkSignUpUrl =
+  process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL ??
+  "https://accounts.westerntruck.com/sign-up";
 
 if (!clerkPublishableKey) {
   throw new Error("Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable.");
@@ -39,9 +45,13 @@ export default function RootLayout({
   return (
     <ClerkProvider
       publishableKey={clerkPublishableKey}
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/"
-      afterSignOutUrl="/"
+      signInUrl={clerkSignInUrl}
+      signUpUrl={clerkSignUpUrl}
+      signInFallbackRedirectUrl="/outside-sales"
+      signUpFallbackRedirectUrl="/outside-sales"
+      afterSignOutUrl="/outside-sales"
+      afterSignInUrl="/outside-sales"
+      afterSignUpUrl="/outside-sales"
     >
       <html lang="en">
         <body
