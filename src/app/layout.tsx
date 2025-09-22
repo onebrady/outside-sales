@@ -39,9 +39,9 @@ export default function RootLayout({
   return (
     <ClerkProvider
       publishableKey={clerkPublishableKey}
-      signInFallbackRedirectUrl="/outside-sales"
-      signUpFallbackRedirectUrl="/outside-sales"
-      afterSignOutUrl="/outside-sales"
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
+      afterSignOutUrl="/"
     >
       <html lang="en">
         <body
