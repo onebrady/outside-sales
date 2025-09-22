@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-function buildReturnUrl(): string {
-  const headersList = headers();
+async function buildReturnUrl(): Promise<string> {
+  const headersList = await headers();
   const forwardedHost = headersList.get("x-forwarded-host");
   const host = forwardedHost ?? headersList.get("host") ?? "localhost:3000";
   const isLocalhost = host.includes("localhost");
@@ -12,14 +12,14 @@ function buildReturnUrl(): string {
   return new URL("/outside-sales", origin).toString();
 }
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
   const signUpUrlString =
     process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL ??
     "https://accounts.westerntruck.com/sign-up";
   const destination = new URL(signUpUrlString);
 
   if (!destination.searchParams.has("redirect_url")) {
-    destination.searchParams.set("redirect_url", buildReturnUrl());
+    destination.searchParams.set("redirect_url", await buildReturnUrl());
   }
 
   redirect(destination.toString());

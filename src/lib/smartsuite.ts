@@ -128,4 +128,36 @@ export async function fetchConsignmentTrailers(options?: {
   return smartsuiteFetch<SmartSuiteListResponse<SmartSuiteTrailerRecord>>(path, body);
 }
 
+export async function fetchComingSoonTrailers(options?: {
+  offset?: number;
+  limit?: number;
+  hydrated?: boolean;
+}): Promise<SmartSuiteListResponse<SmartSuiteTrailerRecord>> {
+  const { offset = 0, limit, hydrated = true } = options ?? {};
+
+  const body: SmartSuiteListRequestBody = {
+    filter: {
+      operator: "and",
+      fields: [
+        {
+          field: "status",
+          comparison: "is",
+          value: "Coming Soon",
+        },
+      ],
+    },
+    hydrated,
+  };
+
+  const params = new URLSearchParams();
+  params.set("offset", String(offset));
+  if (typeof limit === "number") {
+    params.set("limit", String(limit));
+  }
+
+  const path = `/api/v1/applications/${TRAILERS_TABLE_ID}/records/list/?${params.toString()}`;
+
+  return smartsuiteFetch<SmartSuiteListResponse<SmartSuiteTrailerRecord>>(path, body);
+}
+
 export type { SmartSuiteListResponse };
