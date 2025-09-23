@@ -142,7 +142,7 @@ export async function fetchComingSoonTrailers(options?: {
         {
           field: "status",
           comparison: "is",
-          value: "Coming Soon",
+          value: "in_progress",
         },
       ],
     },
