@@ -21,6 +21,7 @@ const LOCATION_FIELD_KEY = "s7c49ff50c";
 const UNIT_COST_FIELD_KEY = "s3c26893a7";
 const MINIMUM_SALE_PRICE_FIELD_KEY = "s348721ad4";
 const WEBSITE_LINK_FIELD_KEY = "sf6c612558";
+const YEAR_FIELD_KEY = "sab4b04f0d";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -481,6 +482,7 @@ export function InStockGrid() {
           const model = extractTextField(record, MODEL_FIELD_KEY);
           const advPrice = extractPrice(record);
           const daysFloored = extractTextField(record, DAYS_FLOORED_FIELD_KEY);
+          const year = extractTextField(record, YEAR_FIELD_KEY);
           const { alt } = getDisplayTitle(record, vin);
 
           return (
@@ -529,6 +531,17 @@ export function InStockGrid() {
                 )}
                 {model && (
                   <p className="text-xs text-slate-600 -mt-1">{model}</p>
+                )}
+
+                {year && (
+                  <div className="pt-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-slate-500 uppercase tracking-wider">Year</span>
+                    </div>
+                    <p className="text-xs font-semibold text-slate-700">
+                      {year}
+                    </p>
+                  </div>
                 )}
 
                 <div className="pt-1 space-y-2">

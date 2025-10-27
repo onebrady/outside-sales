@@ -17,7 +17,6 @@ const navItems = [
   { label: "In Stock", href: "/" },
   { label: "Production", href: "/production" },
   { label: "Consignments", href: "/consignments" },
-  { label: "Core Products", href: "/core-products" },
 ];
 
 export function SiteHeader() {
